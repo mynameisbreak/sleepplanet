@@ -8,3 +8,68 @@ target/
 .idea/
 .vscode/
 logs/
+
+# 忽略子目录的依赖锁文件
+sleepplanet-admin/pnpm-lock.yaml
+# 忽略 node 模块
+sleepplanet-admin/node_modules/
+# 忽略构建产物
+sleepplanet-admin/dist*
+# 忽略 Docker 相关
+sleepplanet-admin/Dockerfile
+sleepplanet-admin/.dockerignore
+# 忽略测试覆盖率
+sleepplanet-admin/coverage/
+
+# 前端项目管理
+**/.vitepress/cache
+.cache
+.turbo
+.temp
+.dev-dist
+.stylelintcache
+
+# 依赖锁定文件
+*-lock.*
+
+# 系统文件
+.DS_Store
+.history
+
+# 构建产物
+*-dist.*
+.nitro
+.output
+dist*
+dist-ssr
+
+# 测试覆盖率
+coverage/
+
+# 本地调试文件
+*.local
+.VSCodeCounter
+
+# 后端模拟数据
+**/backend-mock/data
+
+# 编辑器配置
+.suo
+.ntvs*
+.njsproj
+.sln
+.sw?
+
+
+# 后端相关忽略
+# 环境变量文件
+sleepplanet-backend/.env
+sleepplanet-backend/.env.local
+# 本地配置文件
+sleepplanet-backend/appconfig.local.toml
+
+# 忽略 node 模块
+node_modules/
+# 忽略 npm 相关锁文件
+package-lock.json
+npm-debug.log*
