@@ -8,10 +8,10 @@ anyhow = "1.0.98"
 dotenvy = "0.15.7"
 figment = { version = "0.10.19", features = ["env", "toml"] }
 jsonwebtoken = "9.3.1"
-salvo = { version = "0.79.0", features = ["concurrency-limiter", "jwt-auth", "logging", "serve-static"] }
+salvo = { version = "0.79.0", features = ["full"] }
 serde = "1.0.219"
-sqlx = { version = "0.8.6", features = ["runtime-async-std", "sqlx-postgres"] }
-tokio = { version = "1.45.1", features = ["macros"] }
+sqlx = { version = "0.8.6", features = ["runtime-async-std", "postgres"] }
+tokio = { version = "1.45.1", features = ["macros", "signal"] }
 tracing = "0.1.41"
 tracing-appender = "0.2.3"
 tracing-subscriber = {version = "0.3.19",features = ["std", "fmt", "env-filter", "tracing-log", "time", "local-time", "json"]}

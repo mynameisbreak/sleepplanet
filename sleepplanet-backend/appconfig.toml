@@ -2,7 +2,7 @@
 addr = "0.0.0.0:8080"
 
 [database]
-url = "DATABASE_URL=postgresql://sleepplanet:ekhi4CRs5zXxnJyF@192.168.1.184:5432/sleepplanet"
+url = "postgresql://sleepplanet:ekhi4CRs5zXxnJyF@192.168.1.184:5432/sleepplanet"
 pool_size = 10
 
 [log]

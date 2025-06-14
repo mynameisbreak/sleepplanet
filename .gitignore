@@ -7,3 +7,4 @@ target/
 # 忽略 IDE 相关文件
 .idea/
 .vscode/
+logs/
