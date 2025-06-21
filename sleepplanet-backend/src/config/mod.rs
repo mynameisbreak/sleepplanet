@@ -106,5 +106,5 @@ pub fn default_true() -> bool {
 }
 
 fn default_listen_addr() -> String {
-    "127.0.0.1:8008".into()
+    "127.0.0.1:80".into()
 }

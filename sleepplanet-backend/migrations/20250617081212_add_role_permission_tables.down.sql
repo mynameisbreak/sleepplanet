@@ -1,4 +1,4 @@
--- 回滚用户-角色关联表（依赖users和roles表）
+-- 回滚用户-角色关联表（依赖admin_user和roles表）
 DROP TABLE IF EXISTS user_roles;
 
 -- 回滚角色-权限关联表（依赖roles和permissions表）

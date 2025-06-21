@@ -1,3 +1,15 @@
 {
-    "dependi.rust.lockFileEnabled": true
+    "dependi.rust.lockFileEnabled": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "sleepplant",
+            "database": "sleepplanet",
+            "username": "sleepplanet",
+            "password": "ekhi4CRs5zXxnJyF"
+        }
+    ]
 }

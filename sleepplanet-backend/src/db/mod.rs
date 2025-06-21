@@ -3,6 +3,7 @@ use sqlx::postgres::PgPool;
 use tokio::sync::OnceCell;
 
 pub static SQLX_POOL: OnceCell<PgPool> = OnceCell::const_new();
+
 pub async fn init_db(db: &DbConfig) {
     // 建立数据库连接池
     let pool = match PgPool::connect(&db.url).await {
@@ -22,6 +23,8 @@ pub async fn init_db(db: &DbConfig) {
     }
 }
 
-// pub async fn get_pool() -> &'static PgPool {
-//     SQLX_POOL.get().expect("获取数据库连接池失败")
-// }
+// 获取数据库连接池
+#[inline]
+pub fn get_pool() -> &'static PgPool {
+    SQLX_POOL.get().unwrap()
+}

@@ -4,6 +4,7 @@ use tracing::{info, debug};
 mod config;
 mod db;
 mod routes;
+mod utils;
 
 /// 🚀 应用程序入口点
 /// 负责初始化配置、数据库连接、日志系统，并启动Web服务器

@@ -10,7 +10,7 @@ level = "info"
 path = "./logs/app.log"
 
 [jwt]
-secret = "your-secret-key"
+secret = "QkF6TkQ3U3hOa0Z3bE13RXRXcE9hM0FqWjN4d1A3N3c="
 expires_in = 3600
 
 [ttl]
