@@ -75,29 +75,29 @@ impl Writer for AppError {
         let message = match &self {
             AppError::Public(msg) => msg.clone(),
             AppError::Internal(msg) => {
-                error!("Internal server error: {}", msg);
-                "Internal server error occurred".to_string()
+                error!("内部服务器错误: {}", msg);
+                "服务器内部发生错误".to_string()
             },
             AppError::Salvo(e) => {
-                error!("Salvo framework error: {:?}", e);
-                "Server processing error".to_string()
+                error!("Salvo框架错误: {:?}", e);
+                "服务器处理请求失败".to_string()
             },
             AppError::HttpStatus(e) => e.to_string(),
             AppError::HttpParse(e) => {
-                error!("HTTP parsing error: {:?}", e);
-                format!("Invalid request format: {}", e)
+                error!("HTTP解析错误: {:?}", e);
+                format!("请求格式无效: {}", e)
             },
             AppError::Anyhow(e) => {
-                error!("Anyhow error: {:?}", e);
-                "Internal operation failed".to_string()
+                error!("操作错误: {:?}", e);
+                "内部操作执行失败".to_string()
             },
             AppError::SqlxError(e) => {
-                error!("Database error: {:?}", e);
-                "Database operation failed".to_string()
+                error!("数据库错误: {:?}", e);
+                "数据库操作失败".to_string()
             },
             AppError::Validation(e) => {
-                error!("Validation error: {:?}", e);
-                format!("Invalid input: {}", e)
+                error!("参数验证错误: {:?}", e);
+                format!("输入参数无效: {}", e)
             },
         };
         
@@ -105,7 +105,6 @@ impl Writer for AppError {
             code: status_code.as_u16() as i32,
             message,
             data: (),
-           
         };
         res.render(Json(response));
     }
