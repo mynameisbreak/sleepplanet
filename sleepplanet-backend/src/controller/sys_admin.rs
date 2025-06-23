@@ -17,11 +17,9 @@ use sqlx::PgPool;
 pub async fn get_user_by_username(username: &str) -> Result<Option<(i64, String, String)>> {
     let pool = get_pool();
     let user = sqlx::query!(
-        // 修复SQL查询中的字段名错误：将"user"改为"username"
         "SELECT id, username, password_hash FROM admin_user WHERE username = $1 AND is_active = true",
         username
     )
-    // 从数据库连接池中获取与指定用户名匹配的唯一一条记录，如果不存在则返回 None
     .fetch_optional(pool)
     .await?;
     // 由于数据库返回的 id 类型可能是 i32，而期望的是 i64，因此进行类型转换
@@ -66,12 +64,3 @@ pub fn verify_password(password: &str, hashed_password: &str) -> Result<bool> {
     Ok(verify(password, hashed_password)?)
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::config;
-    use sqlx::PgPool;
-    use testcontainers::*;
-    use testcontainers_modules::postgres::Postgres;
-
-}
