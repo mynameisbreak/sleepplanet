@@ -24,7 +24,7 @@ pub struct Claims{
 // - role: 用户角色
 // 返回值:
 // - anyhow::Result<String>: 包含生成的 JWT 令牌的结果，如果生成失败则包含错误信息
-pub fn generate_token(user_id:i64,username:&str,role:&str)->anyhow::Result<String>{
+pub fn generate_token(user_id:i64,username:&str,roles:&Vec<String>)->anyhow::Result<String>{
     // 获取配置信息
     let config = get_config();
     // 创建 JWT 声明信息结构体
@@ -33,7 +33,7 @@ pub fn generate_token(user_id:i64,username:&str,role:&str)->anyhow::Result<Strin
         // 将传入的用户名转换为 String 类型
         username:username.to_string(),
         // 将传入的用户角色转换为 String 类型
-        role:role.to_string(),
+        role:roles.join(","),
         // 计算令牌的过期时间戳，当前时间加上配置中的过期时间
         exp:(chrono::Utc::now().timestamp() as u64 + config.jwt.expires_in),
     };

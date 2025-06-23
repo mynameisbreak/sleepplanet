@@ -45,6 +45,7 @@ testcontainers-modules = { version = "0.12.1", features = [
     "postgres",
     "serde_json",
 ] }
+serde_json = "1.0"
 
 [package.metadata.sqlx]
 database-url = { env = "DATABASE_URL" }  # 开发环境使用此 URL 验证查询

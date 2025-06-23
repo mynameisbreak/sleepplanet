@@ -5,6 +5,7 @@ use salvo::prelude::*;
 use sqlx::{FromRow, PgPool};
 
 use crate::db;
+pub mod sys_admin;
 
 // 定义一个简单的路由处理函数
 
@@ -39,5 +40,8 @@ pub fn root() -> Router {
     // 构建并返回Router
     Router::new()
         .get(hello_world)
-        .push(Router::with_path("table_count").get(table_count))
+        .push(Router::with_path("sys").push(Router::with_path("login").post(sys_admin::sys_login)))
+        
 }
+
+

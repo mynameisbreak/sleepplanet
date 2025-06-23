@@ -1,11 +1,17 @@
 use salvo::{prelude::*, server::ServerHandle};
 use tokio::signal;
-use tracing::{info, debug};
+use tracing::{debug, info};
+
+use crate::utils::error::AppError;
 mod config;
+mod controller;
 mod db;
 mod routes;
 mod utils;
-mod controller;
+
+pub type AppResult<T> = Result<T, AppError>;
+pub type JsonResult<T> = Result<Json<T>, AppError>;
+
 /// 🚀 应用程序入口点
 /// 负责初始化配置、数据库连接、日志系统，并启动Web服务器
 #[tokio::main]
@@ -18,7 +24,6 @@ async fn main() -> anyhow::Result<()> {
     let _guard = config.log.guard();
     info!("📊 日志级别设置为: {}", &config.log.filter_level);
 
-
     // 初始化数据库连接池
     db::init_db(&config.database).await;
     info!("✅ 数据库连接池初始化成功");
@@ -27,9 +32,7 @@ async fn main() -> anyhow::Result<()> {
     let service = Service::new(routes::root());
 
     // 绑定服务器地址
-    let acceptor = TcpListener::new(&config.server.addr)
-        .bind()
-        .await;
+    let acceptor = TcpListener::new(&config.server.addr).bind().await;
 
     // 创建并启动服务器
     let server = Server::new(acceptor);
@@ -45,9 +48,7 @@ async fn main() -> anyhow::Result<()> {
 async fn shutdown_signal(handle: ServerHandle) {
     // 监听Ctrl+C信号
     let ctrl_c = async {
-        signal::ctrl_c()
-            .await
-            .expect("无法安装Ctrl+C信号处理器");
+        signal::ctrl_c().await.expect("无法安装Ctrl+C信号处理器");
     };
 
     // 监听Unix终止信号
