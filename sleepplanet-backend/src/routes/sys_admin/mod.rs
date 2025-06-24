@@ -281,7 +281,7 @@ async fn validate_roles(role_ids: &[i64]) -> Result<Vec<i64>, AppError> {
     .await
     .map_err(|e| AppError::Internal(format!("角色验证失败: {}", e)))?;
 
-    Ok(roles.iter().map(|r| r.id).collect())
+    Ok(roles.iter().map(|r| r.id as i64).collect())
 }
 
 /// 获取用户角色名称
