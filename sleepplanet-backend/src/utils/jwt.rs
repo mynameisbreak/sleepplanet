@@ -33,7 +33,7 @@ pub fn auth_hoop(config: &JwtConfig) -> JwtAuth<Claims, ConstDecoder> {
         Box::new(QueryFinder::new("token")),
         Box::new(CookieFinder::new("jwt_token")),
     ])
-    .force_passed(false)
+    .force_passed(true)
 }
 
 
