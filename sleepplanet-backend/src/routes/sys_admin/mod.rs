@@ -49,6 +49,8 @@ pub struct SysLoginOutDate {
 
 /// 管理员登录处理器
 /// 验证用户凭据并生成JWT令牌
+/// TODO:包含其他字符会抛出异常
+/// TODO:缺少参数，会直接返回401
 #[handler]
 pub async fn sys_login(
     idata: JsonBody<SysLoginIndate>,
