@@ -4,7 +4,9 @@ use salvo::logging::*;
 use salvo::prelude::*;
 use sqlx::{FromRow, PgPool};
 
+use crate::config::get_config;
 use crate::db;
+use crate::utils::jwt::auth_hoop;
 pub mod sys_admin;
 
 // 定义一个简单的路由处理函数
@@ -38,10 +40,9 @@ pub async fn table_count(depot: &Depot, res: &mut Response) {
 }
 pub fn root() -> Router {
     // 构建并返回Router
-    Router::new()
-        .get(hello_world)
-        .push(Router::with_path("sys").push(Router::with_path("login").post(sys_admin::sys_login)))
-        
+    Router::new().get(hello_world).push(
+        Router::with_path("sys")
+            .hoop(auth_hoop(&get_config().jwt))
+            .push(Router::with_path("login").post(sys_admin::sys_login)),
+    )
 }
-
-

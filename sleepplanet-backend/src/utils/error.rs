@@ -66,7 +66,8 @@ impl AppError {
 /// 实现Salvo的Writer特征，将错误转换为JSON响应
 #[async_trait]
 impl Writer for AppError {
-
+    ///TODO:待完善：用户认证错误
+    
     /// 将错误序列化为JSON响应
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         let status_code = self.status_code();
@@ -99,6 +100,7 @@ impl Writer for AppError {
                 error!("参数验证错误: {:?}", e);
                 format!("输入参数无效: {}", e)
             },
+            
         };
         
         let response = JsonResponse {

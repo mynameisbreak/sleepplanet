@@ -47,6 +47,15 @@ pub async fn get_user_roles(user_id: i64) -> Result<Vec<String>> {
     Ok(roles.into_iter().map(|r| r.name).collect())
 }
 
+
+
+
+
+
+
+
+
+
 /// 验证密码与哈希是否匹配
 ///
 /// 使用bcrypt算法验证原始密码与存储的哈希值是否匹配
