@@ -2,8 +2,11 @@ use crate::JsonResult;
 use crate::config::get_config;
 use crate::controller::sys_admin::*;
 use crate::utils::error::AppError;
-use crate::utils::jwt::generate_token;
+use crate::utils::jwt::{generate_token, Claims};
 
+
+use anyhow::Ok;
+use sqlx::types::Json;
 use time::{Duration,OffsetDateTime};
 use salvo::http::cookie::Cookie;
 use salvo::oapi::extract::JsonBody;
@@ -111,3 +114,20 @@ pub async fn sys_login(
 }
 
 
+#[handler]
+pub async fn sys_logout(req: &mut Request, depot: &mut Depot, res: &mut Response) -> JsonResult<()> {
+    match depot.jwt_auth_state(){
+        JwtAuthState::Authorized => {
+            let data = depot.jwt_auth_data::<Claims>().map_err(|e|{
+                error!("获取JWT数据失败: {}", e);
+                AppError::Public("JWT数据获取失败".to_string())
+            })?;
+            
+            /// TODO: 登出
+        },
+        JwtAuthState::Forbidden => {},
+        JwtAuthState::Unauthorized => {},
+    }
+    res.remove_cookie("jwt_token");
+    Ok(Json(EmptyObject))
+}

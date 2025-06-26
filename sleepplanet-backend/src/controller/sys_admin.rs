@@ -109,6 +109,7 @@ pub async fn create_admin_user(
 ) -> Result<i64, AppError> {
     // 1. 权限校验：仅super_admin可创建管理员
     if !is_super_admin(current_user_id).await? {
+        warn!("创建管理员用户失败: 非super_admin用户尝试创建管理员用户");
         return Err(AppError::Public(
             "需要super_admin权限才能创建管理员用户".to_string(),
         ));
