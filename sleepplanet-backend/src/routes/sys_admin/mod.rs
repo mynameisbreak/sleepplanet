@@ -53,10 +53,13 @@ pub struct SysLoginOutDate {
 /// TODO:缺少参数，会直接返回401
 #[handler]
 pub async fn sys_login(
-    idata: JsonBody<SysLoginIndate>,
-    res: &mut Response,
+    req: &mut Request, depot: &mut Depot, res: &mut Response,
 ) -> JsonResult<SysLoginOutDate> {
-    let login_data = idata.into_inner();
+    let login_data = req.parse_json::<SysLoginIndate>().await.map_err(|e| {
+        tracing::error!(error = %e, "登录请求数据解析失败");
+        AppError::Public("SysLoginDate解析错误".to_string())
+    })?;
+    
     login_data.validate().map_err(|e| {
         warn!("登录参数验证失败: {:?}", e);
         AppError::Public(format!("登录验证失败: {}", e))
