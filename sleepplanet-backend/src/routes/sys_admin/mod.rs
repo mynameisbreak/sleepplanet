@@ -16,20 +16,12 @@ pub struct SysLoginIndate {
     /// 用户名
     #[validate(
         length(min = 4, max = 20, message = "用户名长度需4-20位"),
-        regex(
-            path = "*crate::utils::validation::USERNAME_REGEX",
-            message = "只允许字母、数字和下划线组合"
-        )
     )]
     pub username: String,
 
     /// 密码
     #[validate(
         length(min = 8, max = 32, message = "密码长度需8-32位"),
-        regex(
-            path = "*crate::utils::validation::PASSWORD_REGEX",
-            message = "密码必须包含至少一个数字"
-        )
     )]
     pub password: String,
 }
