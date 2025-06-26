@@ -41,8 +41,6 @@ pub struct SysLoginOutDate {
 
 /// 管理员登录处理器
 /// 验证用户凭据并生成JWT令牌
-/// TODO:包含其他字符会抛出异常
-/// TODO:缺少参数，会直接返回401
 #[handler]
 pub async fn sys_login(
     req: &mut Request, depot: &mut Depot, res: &mut Response,
@@ -51,6 +49,11 @@ pub async fn sys_login(
         tracing::error!(error = %e, "登录请求数据解析失败");
         AppError::Public("SysLoginDate解析错误".to_string())
     })?;
+
+    if login_data.username.is_empty() || login_data.password.is_empty() {
+        warn!("登录参数验证失败: 用户名或密码不能为空");
+        return Err(AppError::Public("用户名或密码不能为空".to_string()));
+    }
     
     login_data.validate().map_err(|e| {
         warn!("登录参数验证失败: {:?}", e);
