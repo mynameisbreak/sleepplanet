@@ -38,6 +38,8 @@ CREATE TABLE role_permissions (
 CREATE TABLE user_roles (
     user_id INTEGER NOT NULL REFERENCES admin_user(id) ON DELETE CASCADE,
     role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    username VARCHAR(50) NOT NULL,
+    rolename VARCHAR(50) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT user_roles_pkey PRIMARY KEY (user_id, role_id)
 );
@@ -129,8 +131,10 @@ FROM permissions
 WHERE resource = 'user';
 
 -- 将默认管理员用户关联到超级管理员角色
-INSERT INTO user_roles (user_id, role_id)
+INSERT INTO user_roles (user_id, role_id, username, rolename)
 VALUES (
     (SELECT id FROM admin_user WHERE username = 'sys_admin'),
-    (SELECT id FROM roles WHERE name = 'super_admin')
+    (SELECT id FROM roles WHERE name = 'super_admin'),
+    'sys_admin',
+    'super_admin'
 );

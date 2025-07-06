@@ -1,15 +1,11 @@
+use crate::config::JwtConfig;
 use crate::config::get_config;
-use anyhow::Result;
-use jsonwebtoken::{
-    Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation, decode, encode,
-};
+use crate::utils::error::AppError;
+use jsonwebtoken::errors::{Error, ErrorKind}; // 确保导入错误类型
+use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, Validation, decode, encode};
 use salvo::jwt_auth::{ConstDecoder, CookieFinder, HeaderFinder, QueryFinder};
 use salvo::prelude::*;
 use serde::{Deserialize, Serialize};
-use time::{Duration,OffsetDateTime};
-use crate::config::JwtConfig;
-
-
 
 #[derive(Debug, Serialize, Deserialize)]
 // 定义一个结构体 `Claims`，用于表示 JWT 中的声明信息
@@ -35,9 +31,6 @@ pub fn auth_hoop(config: &JwtConfig) -> JwtAuth<Claims, ConstDecoder> {
     ])
     .force_passed(true)
 }
-
-
-
 
 // 生成 JWT 令牌的函数
 // 参数:
@@ -77,12 +70,46 @@ pub fn generate_token(user_id: i64, username: &str, roles: &Vec<String>) -> anyh
 pub fn verify_token(token: &str) -> anyhow::Result<Claims> {
     // 获取配置信息
     let config = get_config();
-    // 使用 jsonwebtoken 库的 decode 函数验证并解析 JWT 令牌
-    let token_data = decode::<Claims>(
+    // 检查配置中的 JWT 配置是否有效
+    if config.jwt.secret.is_empty() {
+        return Err(anyhow::anyhow!("JWT secret is empty"));
+    }
+    if config.jwt.expires_in == 0 {
+        return Err(anyhow::anyhow!("JWT expires_in is invalid"));
+    }
+
+    // 显式启用exp过期时间校验
+    let mut validation = Validation::default();
+    validation.algorithms = vec![Algorithm::HS256];
+    validation.validate_exp = true;
+
+    // 使用 match 语句捕获并处理校验错误
+    let token_data = match decode::<Claims>(
         token,
         &DecodingKey::from_secret(config.jwt.secret.as_bytes()),
-        &Validation::new(Algorithm::HS256),
-    )?;
+        &validation,
+    ) {
+        Ok(data) => data,
+        Err(e) => match e.kind() {
+            ErrorKind::ExpiredSignature => {
+                // 处理令牌过期错误
+                
+                return Err(anyhow::anyhow!("令牌已过期"));
+            }
+            ErrorKind::InvalidSignature => {
+                // 处理签名无效错误
+                return Err(anyhow::anyhow!("无效的令牌签名"));
+            }
+            ErrorKind::InvalidToken => {
+                // 处理令牌格式错误
+                return Err(anyhow::anyhow!("令牌格式无效"));
+            }
+            _ => {
+                // 处理其他校验错误
+                return Err(anyhow::anyhow!("令牌验证失败"));
+            }
+        },
+    };
     // 返回解析后的 JWT 声明信息
     Ok(token_data.claims)
 }

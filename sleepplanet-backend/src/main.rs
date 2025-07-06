@@ -1,6 +1,6 @@
 use salvo::{prelude::*, server::ServerHandle};
 use tokio::signal;
-use tracing::{debug, info};
+use tracing::info;
 
 use crate::utils::error::AppError;
 mod config;
@@ -9,10 +9,9 @@ mod db;
 mod routes;
 mod utils;
 
-pub struct EmptyObject {}
 pub type AppResult<T> = Result<T, AppError>;
 pub type JsonResult<T> = Result<Json<T>, AppError>;
-pub type EmptyResult = Result<Json<EmptyObject>, AppError>;
+
 /// 🚀 应用程序入口点
 /// 负责初始化配置、数据库连接、日志系统，并启动Web服务器
 #[tokio::main]

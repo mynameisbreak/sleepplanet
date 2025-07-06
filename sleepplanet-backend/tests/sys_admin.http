@@ -1,0 +1,52 @@
+### 测试变量定义
+# 基础URL配置
+@base_url=http://localhost:8080
+
+# 存储认证测试中使用的令牌和常量
+@jwt_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InN5c19hZG1pbiIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImV4cCI6MTc1MjQzMjUzMX0.DTM7-ExdLxdQ4_I7ZWieWcoU5Uw3EZwEmWRzVLKnAgc
+
+### 管理员认证相关测试
+
+## 登录接口测试
+### 成功案例 - 使用正确凭据登录
+POST {{base_url}}/sys/login
+Content-Type: application/json
+
+{
+  "username": "sys_admin",
+  "password": "admin123456"
+}
+
+## 登出接口测试
+### 成功案例 - 使用有效Token
+POST {{base_url}}/sys/logout
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+### 冻结管理员用户接口测试
+### 成功案例 - 使用有效Token冻结用户
+POST {{base_url}}/sys/freeze_sys_user/4
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{"is_frozen": true}
+
+### 成功案例 - 创建新管理员用户
+POST {{base_url}}/sys/create_sys_user
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "username": "new_admin",
+  "password": "SecurePass123!",
+  "email": "admin123@example.com",
+  "phone_number": "13800138000",
+  "role_names": ["user_admin"]
+}
+
+## 获取管理员用户列表接口测试
+### 成功案例 - 获取用户列表
+GET {{base_url}}/sys/users
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+

@@ -1,15 +1,8 @@
 use salvo::{http::ParseError, prelude::*};
-use serde::Serialize;
 use thiserror::Error;
 use tracing::error;
 
-/// 自定义JSON响应结构
-#[derive(Serialize)]
-struct JsonResponse<T> {
-    code: i32,
-    message: String,
-    data: T,
-}
+use super::api_response::JsonResponse;
 
 /// 应用错误类型，包含各种可能的错误场景
 #[derive(Error, Debug)]
@@ -106,6 +99,6 @@ impl Writer for AppError {
             message,
             data: (),
         };
-        res.render(Json(response));
+        res.render(Json(&response));
     }
 }

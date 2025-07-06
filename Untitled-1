@@ -1,7 +1,0 @@
-UPDATE admin_user
-SET
-    password_hash = '$argon2id$v=19$m=19456,t=2,p=1$zlkHlq8P05i+hi5HLWw5cg$bxcL447EqyMpnezCJBY8iK4RjGsj3Fq8Au5fOp3Vhfw'
-WHERE
-    id = 1;
-
-SELECT r.name FROM roles r JOIN user_roles ur ON r.id = ur.role_id WHERE ur.user_id = 1

@@ -14,5 +14,6 @@
     ],
     "cSpell.words": [
         "sqlx"
-    ]
+    ],
+    "rust-analyzer.checkOnSave": true
 }
